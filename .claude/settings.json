@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./data/**)",
+      "Read(./.venv/**)",
+      "Read(./tests/datos/anilist.json)",
+      "Read(./**/*.egg-info/**)",
+      "Read(./**/__pycache__/**)"
+    ]
+  }
+}
