@@ -44,7 +44,8 @@ class Ajustes:
 
     @property
     def limite_bytes(self) -> int:
-        mb = self.limite_mb or (4000 if self.premium else 2000)
+        # Con margen: Telegram rechaza archivos que llegan justo a su límite (2 GB normal, 4 GB Premium).
+        mb = self.limite_mb or (3900 if self.premium else 1950)
         return mb * 1024 * 1024
 
     def programa(self, nombre: str) -> str:
