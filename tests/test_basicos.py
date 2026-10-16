@@ -11,9 +11,9 @@ def test_ajustes_validan_y_persisten(tmp_path):
     a = Ajustes()
     errores = a.actualizar({'conexiones': 99, 'idioma_sinopsis': 'fr', 'premium': 'true', 'carpeta_subir': ''})
     assert len(errores) == 3 and a.conexiones == 8 and a.premium is True and a.carpeta_subir
-    assert a.limite_bytes == 3900 * 1024 * 1024
+    assert a.limite_bytes == 4000 * 1024 * 1024
     a.premium = False
-    assert a.limite_bytes == 1950 * 1024 * 1024
+    assert a.limite_bytes == 2000 * 1024 * 1024
     a.premium = True
     a.guardar(tmp_path / 'ajustes.json')
     assert Ajustes.cargar(tmp_path / 'ajustes.json').premium is True
