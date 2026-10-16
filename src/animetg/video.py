@@ -166,7 +166,11 @@ def _partir_7z(siete_zip: str, archivo: Path, limite: int, carpeta: Path) -> lis
         raise RuntimeError('Hace falta 7-Zip para partir archivos de más del límite.')
     destino = carpeta / f'{archivo.stem}.7z'
     _ejecutar([siete_zip, 'a', '-t7z', '-mx0', f'-v{limite // (1024 * 1024)}m', '-y', str(destino), str(archivo)])
-    return sorted(carpeta.glob(f'{destino.name}.*'), key=lambda p: p.suffix)
+    # Sin glob: nombres como "[VCB-Studio] ... [1080p]" tienen corchetes, que glob toma como patrón.
+    partes = sorted((p for p in carpeta.iterdir() if p.name.startswith(destino.name + '.')), key=lambda p: p.suffix)
+    if not partes:
+        raise RuntimeError('7-Zip no generó las partes del archivo.')
+    return partes
 
 
 def preparar(ajustes, ruta: Path, info: Info | None, plan: Plan, carpeta: Path,

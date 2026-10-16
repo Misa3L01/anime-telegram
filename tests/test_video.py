@@ -44,7 +44,10 @@ def test_lo_que_no_es_video_se_parte_en_7z(videos, tmp_path):
     ajustes = Ajustes(limite_mb=1)
     if not ajustes.programa_disponible('siete_zip'):
         pytest.skip('necesita 7-Zip')
-    info = analizar(FFPROBE, videos['mkv_subs'])
-    prep = preparar(ajustes, videos['mkv_subs'], info, decidir(videos['mkv_subs'], info), tmp_path, None)
+    # Nombre con corchetes, como los BD-Rips de VCB-Studio.
+    original = tmp_path / '[VCB-Studio] Love Live! The School Idol Movie [Ma10p_1080p][x265_flac].mkv'
+    original.write_bytes(videos['mkv_subs'].read_bytes())
+    info = analizar(FFPROBE, original)
+    prep = preparar(ajustes, original, info, decidir(original, info), tmp_path / 'trabajo', None)
     assert not prep.como_video and len(prep.archivos) > 1
     assert [p.suffix for p in prep.archivos][:2] == ['.001', '.002']
