@@ -32,6 +32,12 @@ def test_love_live_queda_en_orden_cronologico(resolver):
 def test_sunshine_numera_sus_temporadas_desde_uno(resolver):
     res = resolver.resolver(detectar(RAIZ / 'Love Live! Sunshine!! S2 - 10.mkv', RAIZ))
     assert (res.seccion.subserie, res.seccion.numero) == ('Love Live! Sunshine!!', 2)
+    assert res.media['id'] == res.seccion.media_id != res.seccion.subserie_id  # carátula de la T2, no de la T1
+
+
+def test_numeracion_corrida_usa_la_caratula_de_su_temporada(resolver):
+    res = resolver.resolver(detectar(RAIZ / 'Jujutsu Kaisen - 30.mp4', RAIZ))
+    assert res.media['id'] == res.seccion.media_id
 
 
 def test_precuela_va_antes_de_la_temporada_1(resolver):

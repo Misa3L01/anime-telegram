@@ -266,7 +266,8 @@ class Resolver:
         previas = [t.total for t in temporadas[:temporadas.index(seccion)]]
         if seccion.total and ep > seccion.total and all(previas) and 0 < ep - sum(previas) <= seccion.total:
             ep -= sum(previas)
-        return Resultado(raiz, seccion, ep, media, varias)
+        # La entrada de la temporada (y parte) concreta: así la carátula es la de esa temporada.
+        return Resultado(raiz, seccion, ep, seccion.medias[min(parte, len(seccion.medias)) - 1], varias)
 
     def _episodio(self, det: Deteccion, media: dict) -> int:
         if det.episodio is not None:
@@ -284,7 +285,7 @@ class Resolver:
         resto = self._episodio(det, media)
         for t in temporadas:
             if t.total is None or resto <= t.total:
-                return Resultado(raiz, t, resto, media, varias)
+                return Resultado(raiz, t, resto, t.medias[0], varias)
             resto -= t.total
         t = temporadas[-1]  # más episodios de los que AniList conoce
-        return Resultado(raiz, t, resto + t.total, media, varias)
+        return Resultado(raiz, t, resto + t.total, t.medias[0], varias)
